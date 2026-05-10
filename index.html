@@ -518,7 +518,7 @@
                 seed.classList.add('planted');
             }, 700);
 
-            setStatus('A seed for you. Now it needs water 💧', 'text-stone-400');
+            setStatus('. Now it needs water', 'text-stone-400');
 
             setTimeout(() => {
                 document.getElementById('btn-water').classList.remove('hidden');
@@ -550,18 +550,18 @@
 
             // Milestones
             if (waters === 3) {
-                setStatus('Something is stirring under the soil...', 'text-stone-400');
+                setStatus('ooooo', 'text-stone-400');
             } else if (waters === 5) {
-                setStatus('A little sprout! Keep going! 🌱', 'text-green-300/70');
+                setStatus('ooooooooooooooo', 'text-green-300/70');
                 const seed = document.getElementById('seed');
                 seed.classList.add('sinking');
                 setTimeout(() => {
                     document.getElementById('sprout').classList.add('visible');
                 }, 400);
             } else if (waters === 7) {
-                setStatus("It's growing! Almost there...", 'text-green-300/70');
+                setStatus("almost... :o", 'text-green-300/70');
             } else if (waters === 9) {
-                setStatus('One more! 🌿', 'text-green-300/80');
+                setStatus('oh loook!', 'text-green-300/80');
             } else if (waters >= MAX) {
                 growRose();
             }
@@ -602,7 +602,7 @@
             document.getElementById('btn-water').classList.add('hidden');
             document.getElementById('dots').style.display = 'none';
 
-            setStatus("It's blooming... ✨", 'text-rose-300/60');
+            setStatus("a nice flower!", 'text-rose-300/60');
 
             // Hide sprout
             setTimeout(() => {
