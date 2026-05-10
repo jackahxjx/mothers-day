@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Mom 🌹</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0f0a0a; overflow-x: hidden; }
+        ::selection { background-color: #fecdd3; color: #1c1917; }
+
+        .stars {
+            background-image:
+                radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.15), transparent),
+                radial-gradient(1px 1px at 60px 70px, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1.5px 1.5px at 110px 40px, rgba(255,255,255,0.12), transparent),
+                radial-gradient(1px 1px at 155px 90px, rgba(255,255,255,0.08), transparent),
+                radial-gradient(1.5px 1.5px at 200px 25px, rgba(255,255,255,0.14), transparent),
+                radial-gradient(1px 1px at 250px 65px, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1px 1px at 290px 15px, rgba(255,255,255,0.12), transparent);
+            background-size: 320px 100px;
+        }
+
+        /* Pot */
+        .pot-rim {
+            width: 156px; height: 18px;
+            background: linear-gradient(180deg, #d49a7e, #b88464);
+            border-radius: 8px;
+            margin-left: -13px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .pot-body {
+            width: 130px; height: 78px;
+            background: linear-gradient(180deg, #c98b6e, #a8704e);
+            border-radius: 4px 4px 30px 30px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: visible;
+        }
+        .pot-shine {
+            position: absolute;
+            top: 8px; left: 10px;
+            width: 20px; height: 50px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+        }
+        .soil {
+            position: absolute;
+            top: -4px; left: 5px; right: 5px; height: 22px;
+            background: radial-gradient(ellipse, #5a3a22, #3d2514);
+            border-radius: 50%;
+            z-index: 2;
+            transition: background 0.6s ease;
+        }
+        .soil-moisture {
+            position: absolute; inset: 0;
+            background: rgba(25,12,5,0);
+            border-radius: 50%;
+            transition: background 0.6s ease;
+        }
+
+        /* Seed */
+        .seed {
+            position: absolute; bottom: 100px; left: 50%;
+            transform: translateX(-50%) scale(0);
+            font-size: 18px; z-index: 5;
+            transition: transform 0.7s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s ease, bottom 0.6s ease;
+        }
+        .seed.planted { transform: translateX(-50%) scale(1); }
+        .seed.sinking { bottom: 88px; transform: translateX(-50%) scale(0.6); opacity: 0.4; }
+        .seed.gone { opacity: 0; transform: translateX(-50%) scale(0); }
+
+        /* Sprout */
+        .sprout-wrap {
+            position: absolute; bottom: 98px; left: 50%;
+            transform: translateX(-50%) scaleY(0);
+            transform-origin: bottom center;
+            transition: transform 1.2s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s ease;
+            z-index: 4;
+        }
+        .sprout-wrap.visible { transform: translateX(-50%) scaleY(1); }
+        .sprout-wrap.hidden { opacity: 0; transform: translateX(-50%) scaleY(0); }
+        .sprout-stem {
+            width: 4px; height: 24px;
+            background: linear-gradient(to top, #4a7c59, #7ab648);
+            border-radius: 2px;
+            margin: 0 auto;
+        }
+        .sprout-leaf-l, .sprout-leaf-r {
+            position: absolute; top: 2px;
+            width: 12px; height: 7px;
+            background: #7ab648; border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.6s ease 0.7s;
+        }
+        .sprout-leaf-l { right: 3px; transform: rotate(-40deg); }
+        .sprout-leaf-r { left: 3px; transform: rotate(40deg); }
+        .sprout-wrap.visible .sprout-leaf-l,
+        .sprout-wrap.visible .sprout-leaf-r { opacity: 1; }
+
+        /* Full stem */
+        .main-stem {
+            position: absolute; bottom: 98px; left: 50%;
+            width: 5px; height: 180px;
+            margin-left: -2.5px;
+            background: linear-gradient(to top, #3d6b4a, #5a9e3a, #7ab648);
+            border-radius: 3px;
+            transform: scaleY(0);
+            transform-origin: bottom center;
+            z-index: 5;
+            transition: transform 2.8s cubic-bezier(0.25,1,0.5,1);
+        }
+        .main-stem.grown { transform: scaleY(1); }
+
+        /* Thorns */
+        .thorn {
+            position: absolute; width: 6px; height: 3px;
+            background: #4a7c59;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .thorn.visible { opacity: 1; }
+        .thorn-l { left: -5px; border-radius: 0 50% 50% 0; }
+        .thorn-r { right: -5px; border-radius: 50% 0 0 50%; }
+
+        /* Leaves on main stem */
+        .stem-leaf {
+            position: absolute; width: 34px; height: 16px;
+            background: linear-gradient(135deg, #5a9e3a, #7ec840);
+            opacity: 0; z-index: 6;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .stem-leaf-l {
+            right: 4px; top: 55px;
+            border-radius: 50% 0 0 50%;
+            transform: rotate(35deg) scale(0);
+            transform-origin: right center;
+        }
+        .stem-leaf-r {
+            left: 4px; top: 100px;
+            border-radius: 0 50% 50% 0;
+            transform: rotate(-35deg) scale(0);
+            transform-origin: left center;
+        }
+        .stem-leaf.visible { opacity: 1; }
+        .stem-leaf-l.visible { transform: rotate(35deg) scale(1); }
+        .stem-leaf-r.visible { transform: rotate(-35deg) scale(1); }
+
+        /* Leaf veins */
+        .stem-leaf::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 20%; right: 20%;
+            height: 1px;
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* Rose */
+        .rose-flower {
+            position: absolute; bottom: 274px; left: 50%;
+            transform: translateX(-50%) scale(0) rotate(-20deg);
+            font-size: 58px; z-index: 10;
+            transition: transform 2s cubic-bezier(0.34,1.56,0.64,1), filter 1.5s ease;
+            filter: drop-shadow(0 0 0px rgba(251,113,133,0));
+        }
+        .rose-flower.bloomed {
+            transform: translateX(-50%) scale(1) rotate(0deg);
+            filter: drop-shadow(0 0 30px rgba(251,113,133,0.45));
+        }
+
+        /* Rose glow */
+        .rose-glow {
+            position: absolute; bottom: 260px; left: 50%;
+            transform: translateX(-50%) scale(0);
+            width: 100px; height: 100px;
+            background: radial-gradient(circle, rgba(251,113,133,0.15), transparent 70%);
+            border-radius: 50%;
+            z-index: 9;
+            transition: transform 2s ease;
+        }
+        .rose-glow.visible {
+            transform: translateX(-50%) scale(1);
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+        }
+
+        /* Rain */
+        @keyframes rainFall {
+            0% { transform: translateY(0); opacity: 0.7; }
+            70% { opacity: 0.5; }
+            100% { transform: translateY(260px); opacity: 0; }
+        }
+        .rain-drop {
+            position: absolute; top: 0;
+            width: 2.5px; height: 12px;
+            background: linear-gradient(to bottom, transparent, rgba(96,165,250,0.7));
+            border-radius: 0 0 3px 3px;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Splash at soil */
+        @keyframes splash {
+            0% { transform: scale(0); opacity: 0.7; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .splash {
+            position: absolute;
+            width: 16px; height: 5px;
+            border: 1px solid rgba(96,165,250,0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Floating hearts */
+        @keyframes floatHeart {
+            0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.9; }
+            50% { opacity: 0.7; }
+            100% { transform: translateY(-100px) scale(0.4) rotate(20deg); opacity: 0; }
+        }
+        .float-heart {
+            position: absolute;
+            pointer-events: none;
+            z-index: 15;
+            animation: floatHeart var(--duration, 2.5s) ease-out forwards;
+        }
+
+        /* Water progress dots */
+        .water-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: rgba(96,165,250,0.15);
+            transition: background 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease;
+        }
+        .water-dot.filled {
+            background: #60a5fa;
+            transform: scale(1.3);
+            box-shadow: 0 0 8px rgba(96,165,250,0.4);
+        }
+
+        /* Button styles */
+        .btn-plant {
+            background: linear-gradient(135deg, rgba(120,80,40,0.6), rgba(100,65,30,0.6));
+            border: 1px solid rgba(180,140,90,0.3);
+            color: #e8d5b8;
+            transition: all 0.2s ease;
+        }
+        .btn-plant:hover { background: linear-gradient(135deg, rgba(140,95,45,0.7), rgba(115,75,35,0.7)); }
+        .btn-plant:active { transform: scale(0.95); }
+
+        .btn-water {
+            background: linear-gradient(135deg, rgba(30,60,100,0.5), rgba(25,50,85,0.5));
+            border: 1px solid rgba(96,165,250,0.25);
+            color: #93c5fd;
+            position: relative; overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .btn-water:hover { background: linear-gradient(135deg, rgba(40,75,120,0.6), rgba(30,60,100,0.6)); }
+        .btn-water:active { transform: scale(0.95); }
+        .water-fill-bar {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(96,165,250,0.12);
+            border-radius: inherit;
+            transition: height 0.4s ease;
+            pointer-events: none;
+        }
+
+        /* Letter reveal */
+        .letter-section {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+            pointer-events: none;
+        }
+        .letter-section.visible {
+            opacity: 1; transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Ambient ground glow */
+        .ground-glow {
+            position: absolute; bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            width: 200px; height: 30px;
+            background: radial-gradient(ellipse, rgba(200,140,80,0.08), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Warm shift after bloom */
+        .scene-bg {
+            transition: background 3s ease;
+        }
+        .scene-bg.warm {
+            background: linear-gradient(180deg, #0f0a0a 0%, #1a1015 40%, #1f1318 70%, #0f0a0a 100%);
+        }
+
+        /* Seed drop animation */
+        @keyframes seedDrop {
+            0% { transform: translateX(-50%) translateY(-40px) scale(0.5); opacity: 0; }
+            60% { transform: translateX(-50%) translateY(4px) scale(1.1); opacity: 1; }
+            80% { transform: translateX(-50%) translateY(-2px) scale(0.95); }
+            100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+        }
+        .seed.dropping {
+            animation: seedDrop 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+        }
+
+        /* Shake for planting */
+        @keyframes smallShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        /* Letter inner card */
+        .letter-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    </style>
+</head>
+<body class="font-sans text-white min-h-screen">
+
+    <!-- Garden Scene -->
+    <div id="scene" class="scene-bg min-h-screen flex flex-col items-center relative">
+
+        <!-- Stars -->
+        <div class="stars absolute inset-0 pointer-events-none opacity-60"></div>
+
+        <!-- Title -->
+        <div class="relative z-10 pt-14 md:pt-20 text-center px-6">
+            <p class="text-rose-300/50 text-xs font-medium uppercase tracking-[0.2em] mb-3">For the best mom in the world</p>
+            <h1 class="font-serif text-3xl md:text-5xl tracking-tight text-stone-100/90">I grew something for you</h1>
+        </div>
+
+        <!-- Status text -->
+        <p id="status" class="relative z-10 text-stone-500 text-sm mt-6 mb-2 h-6 text-center transition-all duration-700 px-6">
+            Ready to plant?
+        </p>
+
+        <!-- Garden container -->
+        <div id="garden" class="relative z-10 mt-2" style="width:280px; height:360px;">
+
+            <!-- Rain container -->
+            <div id="rain-box" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
+
+            <!-- Rose glow -->
+            <div id="rose-glow" class="rose-glow"></div>
+
+            <!-- Rose -->
+            <div id="rose" class="rose-flower">🌹</div>
+
+            <!-- Main stem -->
+            <div id="main-stem" class="main-stem">
+                <div class="thorn thorn-l" style="top:40px;" id="thorn1"></div>
+                <div class="thorn thorn-r" style="top:80px;" id="thorn2"></div>
+                <div class="thorn thorn-l" style="top:130px;" id="thorn3"></div>
+                <div class="stem-leaf stem-leaf-l" id="leaf-l"></div>
+                <div class="stem-leaf stem-leaf-r" id="leaf-r"></div>
+            </div>
+
+            <!-- Sprout -->
+            <div id="sprout" class="sprout-wrap">
+                <div class="sprout-leaf-l"></div>
+                <div class="sprout-stem"></div>
+                <div class="sprout-leaf-r"></div>
+            </div>
+
+            <!-- Seed -->
+            <div id="seed" class="seed">🫘</div>
+
+            <!-- Pot -->
+            <div style="position:absolute; bottom:0; left:50%; transform:translateX(-50%); z-index:3;">
+                <div class="pot-rim"></div>
+                <div class="pot-body">
+                    <div class="pot-shine"></div>
+                    <div class="soil" id="soil">
+                        <div class="soil-moisture" id="soil-moisture"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ground shadow -->
+            <div class="ground-glow"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="relative z-10 flex flex-col items-center gap-5 mt-2">
+
+            <button id="btn-plant" onclick="plantSeed()" class="btn-plant text-sm font-medium px-8 py-3 rounded-full">
+                <span class="flex items-center gap-2">🌱 Plant a seed for Mom</span>
+            </button>
+
+            <button id="btn-water" onclick="water()" class="btn-water text-sm font-medium px-8 py-3 rounded-full hidden">
+                <div class="water-fill-bar" id="water-fill" style="height:0%"></div>
+                <span class="relative z-10 flex items-center gap-2">
+                    💧 <span id="water-text">Water it</span>
+                </span>
+            </button>
+
+            <div id="dots" class="flex gap-2 hidden"></div>
+        </div>
+
+        <div class="flex-1"></div>
+
+        <!-- Scroll hint (after bloom) -->
+        <div id="scroll-hint" class="relative z-10 pb-8 text-stone-600 text-xs hidden flex-col items-center gap-1 animate-bounce">
+            <span>Read the letter</span>
+            <span>↓</span>
+        </div>
+    </div>
+
+    <!-- Letter Section -->
+    <div id="letter" class="letter-section min-h-screen py-16 md:py-24 px-6" style="background: linear-gradient(180deg, #0f0a0a 0%, #170e12 20%, #1c1015 50%, #170e12 80%, #0f0a0a 100%);">
+        <div class="max-w-xl mx-auto">
+
+            <div class="text-center mb-12">
+                <div class="text-5xl mb-4">🌹</div>
+                <p class="text-rose-300/50 text-xs font-medium uppercase tracking-[0.2em] mb-3">A letter for you</p>
+                <h2 class="font-serif text-3xl md:text-4xl tracking-tight text-stone-100/90">From Jack</h2>
+            </div>
+
+            <div class="letter-card rounded-2xl p-8 md:p-12">
+
+                <p class="font-serif text-lg text-rose-200/60 mb-8">Dear Mom,</p>
+
+                <p class="text-stone-400 text-sm leading-7 mb-5">
+                    Thank you for every meal you cook that I probably don't thank you for enough. For every time you ask how my day was and actually listen to the answer. Even when I just say "fine."
+                </p>
+
+                <p class="text-stone-400 text-sm leading-7 mb-5">
+                    I know I can be a lot. The messy room, the attitude, the "I'm fine" when I'm clearly not. But you never stop trying. You never stop caring. Even when I make it hard, you keep showing up. That doesn't go unnoticed. I see it, even if I don't act like it.
+                </p>
+
+                <p class="text-stone-400 text-sm leading-7 mb-5">
+                    You've given up so much so I could have what I have. You worry about me way more than you let on. And you love me in a never-ending way that I honestly don't think I'll ever fully understand.
+                </p>
+
+                <p class="text-stone-400 text-sm leading-7 mb-5">
+                    One day I'll move out, and you'll miss having me around, or at least miss having to ask somone to fill your ice cup. But even then, nothing changes between us. You'll always be my person. You'll always be my mom.
+                </p>
+
+                <p class="text-stone-400 text-sm leading-7 mb-10">
+                    Happy Mother's Day. I love you more than you'll ever know, even if it looks like i don't try. 
+                </p>
+
+                <p class="font-serif text-lg text-rose-200/60">With all my love,</p>
+                <p class="font-serif text-xl text-stone-100/90 mt-2">Jack ❤️</p>
+            </div>
+
+            <div class="text-center mt-16 space-y-2">
+                <div class="text-2xl">🌹</div>
+                <p class="text-stone-700 text-xs">Made with love, just for you</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const MAX = 10;
+        let waters = 0;
+        let stage = 'start';
+
+        // Build dots
+        const dotsEl = document.getElementById('dots');
+        for (let i = 0; i < MAX; i++) {
+            const d = document.createElement('div');
+            d.className = 'water-dot';
+            d.id = 'dot' + i;
+            dotsEl.appendChild(d);
+        }
+
+        function setStatus(text, color) {
+            const el = document.getElementById('status');
+            el.style.opacity = '0';
+            setTimeout(() => {
+                el.textContent = text;
+                el.className = `relative z-10 text-sm mt-6 mb-2 h-6 text-center transition-all duration-700 px-6 ${color || 'text-stone-500'}`;
+                el.style.opacity = '1';
+            }, 300);
+        }
+
+        function plantSeed() {
+            if (stage !== 'start') return;
+            stage = 'planted';
+
+            document.getElementById('btn-plant').classList.add('hidden');
+
+            const seed = document.getElementById('seed');
+            seed.classList.add('dropping');
+
+            setTimeout(() => {
+                seed.classList.remove('dropping');
+                seed.classList.add('planted');
+            }, 700);
+
+            setStatus('A seed for you. Now it needs water 💧', 'text-stone-400');
+
+            setTimeout(() => {
+                document.getElementById('btn-water').classList.remove('hidden');
+                document.getElementById('dots').classList.remove('hidden');
+                document.getElementById('dots').style.display = 'flex';
+            }, 900);
+        }
+
+        function water() {
+            if (waters >= MAX || stage === 'growing') return;
+            waters++;
+
+            // Rain
+            makeRain();
+
+            // Fill dot
+            document.getElementById('dot' + (waters - 1)).classList.add('filled');
+
+            // Water fill bar
+            document.getElementById('water-fill').style.height = (waters / MAX * 100) + '%';
+
+            // Moisture
+            document.getElementById('soil-moisture').style.background =
+                `rgba(25,12,5,${waters / MAX * 0.55})`;
+
+            // Button text
+            document.getElementById('water-text').textContent =
+                `Water it (${waters}/${MAX})`;
+
+            // Milestones
+            if (waters === 3) {
+                setStatus('Something is stirring under the soil...', 'text-stone-400');
+            } else if (waters === 5) {
+                setStatus('A little sprout! Keep going! 🌱', 'text-green-300/70');
+                const seed = document.getElementById('seed');
+                seed.classList.add('sinking');
+                setTimeout(() => {
+                    document.getElementById('sprout').classList.add('visible');
+                }, 400);
+            } else if (waters === 7) {
+                setStatus("It's growing! Almost there...", 'text-green-300/70');
+            } else if (waters === 9) {
+                setStatus('One more! 🌿', 'text-green-300/80');
+            } else if (waters >= MAX) {
+                growRose();
+            }
+        }
+
+        function makeRain() {
+            const box = document.getElementById('rain-box');
+            const cx = 140, pw = 120;
+
+            for (let i = 0; i < 10; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                const x = cx - pw / 2 + Math.random() * pw;
+                drop.style.left = x + 'px';
+                const dur = 0.5 + Math.random() * 0.3;
+                const delay = Math.random() * 0.25;
+                drop.style.animation = `rainFall ${dur}s ease-in ${delay}s forwards`;
+                box.appendChild(drop);
+
+                // Splash
+                setTimeout(() => {
+                    const sp = document.createElement('div');
+                    sp.className = 'splash';
+                    sp.style.left = (x - 8) + 'px';
+                    sp.style.top = '90px';
+                    sp.style.animation = `splash 0.5s ease-out forwards`;
+                    box.appendChild(sp);
+                    setTimeout(() => sp.remove(), 600);
+                }, (dur + delay) * 800);
+
+                setTimeout(() => drop.remove(), 2000);
+            }
+        }
+
+        function growRose() {
+            stage = 'growing';
+
+            document.getElementById('btn-water').classList.add('hidden');
+            document.getElementById('dots').style.display = 'none';
+
+            setStatus("It's blooming... ✨", 'text-rose-300/60');
+
+            // Hide sprout
+            setTimeout(() => {
+                document.getElementById('sprout').classList.add('hidden');
+                document.getElementById('seed').classList.add('gone');
+            }, 300);
+
+            // Grow stem
+            setTimeout(() => {
+                document.getElementById('main-stem').classList.add('grown');
+            }, 700);
+
+            // Thorns
+            setTimeout(() => {
+                document.getElementById('thorn1').classList.add('visible');
+                document.getElementById('thorn2').classList.add('visible');
+            }, 2000);
+            setTimeout(() => {
+                document.getElementById('thorn3').classList.add('visible');
+            }, 2300);
+
+            // Leaves
+            setTimeout(() => {
+                document.getElementById('leaf-l').classList.add('visible');
+            }, 1800);
+            setTimeout(() => {
+                document.getElementById('leaf-r').classList.add('visible');
+            }, 2200);
+
+            // Rose bloom
+            setTimeout(() => {
+                document.getElementById('rose').classList.add('bloomed');
+                document.getElementById('rose-glow').classList.add('visible');
+            }, 2600);
+
+            // After bloom
+            setTimeout(() => {
+                setStatus('🌹 For you, Mom. I love you. 🌹', 'text-rose-300/80');
+                document.getElementById('scene').classList.add('warm');
+                startHearts();
+
+                // Show scroll hint
+                setTimeout(() => {
+                    const hint = document.getElementById('scroll-hint');
+                    hint.classList.remove('hidden');
+                    hint.style.display = 'flex';
+                }, 1000);
+
+                // Show letter
+                setTimeout(() => {
+                    document.getElementById('letter').classList.add('visible');
+                }, 2000);
+
+            }, 4500);
+        }
+
+        function startHearts() {
+            const garden = document.getElementById('garden');
+            let count = 0;
+            const emojis = ['❤️', '💕', '🩷', '💗', '🤍'];
+
+            const iv = setInterval(() => {
+                if (count >= 15) { clearInterval(iv); return; }
+                const h = document.createElement('div');
+                h.className = 'float-heart';
+                h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                h.style.left = (90 + Math.random() * 100) + 'px';
+                h.style.top = (20 + Math.random() * 60) + 'px';
+                h.style.fontSize = (10 + Math.random() * 12) + 'px';
+                h.style.setProperty('--duration', (2 + Math.random() * 1.5) + 's');
+                garden.appendChild(h);
+                setTimeout(() => h.remove(), 4000);
+                count++;
+            }, 350);
+        }
+    </script>
+</body>
+</html>
