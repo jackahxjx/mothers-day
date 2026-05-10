@@ -360,7 +360,7 @@
 
         <!-- Status text -->
         <p id="status" class="relative z-10 text-stone-500 text-sm mt-6 mb-2 h-6 text-center transition-all duration-700 px-6">
-            Ready to plant?
+            i hope you like it :)
         </p>
 
         <!-- Garden container -->
@@ -413,7 +413,7 @@
         <div class="relative z-10 flex flex-col items-center gap-5 mt-2">
 
             <button id="btn-plant" onclick="plantSeed()" class="btn-plant text-sm font-medium px-8 py-3 rounded-full">
-                <span class="flex items-center gap-2">🌱 Plant a seed for Mom</span>
+                <span class="flex items-center gap-2"> plant the seed!</span>
             </button>
 
             <button id="btn-water" onclick="water()" class="btn-water text-sm font-medium px-8 py-3 rounded-full hidden">
@@ -518,7 +518,7 @@
                 seed.classList.add('planted');
             }, 700);
 
-            setStatus('. Now it needs water', 'text-stone-400');
+            setStatus('Now it needs water', 'text-stone-400');
 
             setTimeout(() => {
                 document.getElementById('btn-water').classList.remove('hidden');
